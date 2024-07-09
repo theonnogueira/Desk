@@ -25,6 +25,7 @@ public class TechnicianDTO implements Serializable {
 
 	public TechnicianDTO() {
 		super();
+		addProfiles(Profile.CLIENT);
 
 	}
 
