@@ -6,9 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.theo.helpdesk.domain.People;
 import com.theo.helpdesk.domain.Technician;
 import com.theo.helpdesk.domain.dtos.TechnicianDTO;
+import com.theo.helpdesk.repositories.PeopleRepository;
 import com.theo.helpdesk.repositories.TechnicianRepository;
+import com.theo.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.theo.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -16,6 +19,9 @@ public class TechnicianService {
 
 	@Autowired
 	private TechnicianRepository technicianRepository;
+
+	@Autowired
+	private PeopleRepository peopleRepository;
 
 	public Technician findById(Integer id) {
 		Optional<Technician> obj = technicianRepository.findById(id);
@@ -28,7 +34,20 @@ public class TechnicianService {
 
 	public Technician create(TechnicianDTO objDTO) {
 		objDTO.setId(null);
+		validateByCpfAndEmail(objDTO);
 		Technician newObj = new Technician(objDTO);
 		return technicianRepository.save(newObj);
+	}
+
+	private void validateByCpfAndEmail(TechnicianDTO objDTO) {
+		Optional<People> obj = peopleRepository.findByCpf(objDTO.getCpf());
+		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
+			throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");
+		}
+
+		obj = peopleRepository.findByEmail(objDTO.getEmail());
+		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
+			throw new DataIntegrityViolationException("E-MAIL já cadastrado no sistema!");
+		}
 	}
 }
