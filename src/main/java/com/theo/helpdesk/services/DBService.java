@@ -29,7 +29,7 @@ public class DBService {
 
 		Technician tec1 = new Technician();
 		Technician tec2 = new Technician(null, "Théo Nogueira", "270.536.330-04", "theonogueira@outlook.com", "321");
-		Technician tec3 = new Technician(null, "Izaias Manoel", "000.999.330-04", "izaiza@outlook.com", "111");
+		Technician tec3 = new Technician(null, "Nelsinho", "000.999.330-04", "nelsinho@outlook.com", "111");
 		tec2.addProfile(Profile.ADMIN);
 		tec3.addProfile(Profile.TECHNICIAN);
 
