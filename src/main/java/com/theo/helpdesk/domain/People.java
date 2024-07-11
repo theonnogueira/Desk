@@ -16,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.theo.helpdesk.domain.enums.Profile;
 
@@ -27,9 +29,11 @@ public abstract class People implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String name;
-
+	
+	@CPF
 	@Column(unique = true)
 	protected String cpf;
+	
 	@Column(unique = true)
 	protected String email;
 	protected String password;

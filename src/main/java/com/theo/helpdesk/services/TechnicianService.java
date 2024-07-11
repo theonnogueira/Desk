@@ -3,6 +3,8 @@ package com.theo.helpdesk.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,14 @@ public class TechnicianService {
 		return technicianRepository.save(newObj);
 	}
 
+	public Technician update(Integer id, @Valid TechnicianDTO objDTO) {
+		objDTO.setId(id);
+		Technician oldObj = findById(id);
+		validateByCpfAndEmail(objDTO);
+		oldObj = new Technician(objDTO);
+		return technicianRepository.save(oldObj);
+	}
+
 	private void validateByCpfAndEmail(TechnicianDTO objDTO) {
 		Optional<People> obj = peopleRepository.findByCpf(objDTO.getCpf());
 		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
@@ -50,4 +60,5 @@ public class TechnicianService {
 			throw new DataIntegrityViolationException("E-MAIL já cadastrado no sistema!");
 		}
 	}
+
 }
