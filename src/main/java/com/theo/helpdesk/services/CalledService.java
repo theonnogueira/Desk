@@ -1,5 +1,6 @@
 package com.theo.helpdesk.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class CalledService {
 	public Called findById(Integer id) {
 		Optional<Called> obj = calledRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
+	}
+
+	public List<Called> findAll() {
+		return calledRepository.findAll();
 	}
 
 }
