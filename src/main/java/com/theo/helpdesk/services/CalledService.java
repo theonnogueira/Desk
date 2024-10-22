@@ -1,5 +1,6 @@
 package com.theo.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,13 @@ public class CalledService {
 		return calledRepository.save(newCalled(objDTO));
 	}
 
+	public Called update(Integer id, @Valid CalledDTO objDTO) {
+		objDTO.setId(id);
+		Called oldObj = findById(id);
+		oldObj = newCalled(objDTO);
+		return calledRepository.save(oldObj);
+	}
+
 	private Called newCalled(CalledDTO obj) {
 		Technician technician = technicianService.findById(obj.getTechnician());
 		Client client = clientService.findById(obj.getClient());
@@ -49,6 +57,10 @@ public class CalledService {
 		Called called = new Called();
 		if (obj.getId() != null) {
 			called.setId(obj.getId());
+		}
+
+		if (obj.getStatus().equals(2)) {
+			called.setClosureDate(LocalDate.now());
 		}
 
 		called.setTechnician(technician);
