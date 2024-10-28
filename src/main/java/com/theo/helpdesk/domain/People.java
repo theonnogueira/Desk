@@ -36,6 +36,7 @@ public abstract class People implements Serializable {
 	
 	@Column(unique = true)
 	protected String email;
+	
 	protected String password;
 
 	@ElementCollection(fetch = FetchType.EAGER)
